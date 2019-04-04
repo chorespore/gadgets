@@ -1,0 +1,59 @@
+<html>
+
+<head></head>
+
+<body>
+    <div>
+        <canvas id="clock" width="1920" height="1080"></canvas>
+
+    </div>
+    <script>
+        let canvas = document.getElementById("clock");
+        let ctx = canvas.getContext('2d');
+        let degree = 0;
+        ctx.font = "bold 40px '字体','字体','楷体','宋体'"; //设置字体
+
+        const weeks = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+        const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+
+        setInterval(drawText, 1000);
+
+        function drawText() {
+            let width = 1440;
+            let height = 900;
+            // ctx.clearRect(0, 0, 1920, 1080);
+            ctx.fillStyle = 'black';  //设置填充的背景颜色
+            ctx.fillRect(0, 0, width, height); //绘制 800*300 像素的已填充矩形：
+            ctx.fillStyle = "white";
+
+            for (let i = 0; i < weeks.length; i++) {
+                ctx.fillText(weeks[i], 150, i * 100 + 100);
+            }
+
+            for (let i = 0; i < months.length; i++) {
+                ctx.save();
+                rotateContext(ctx, width / 2, height / 2, i * (360 / months.length)+degree);
+                ctx.fillText(months[i], 200, 0);
+                ctx.restore();
+            }
+
+
+            if (degree > 360) {
+                degree = 0
+            } else {
+                degree+=10
+            }
+
+        }
+
+        //确保是以(x,y)为中心进行旋转，而不是简单的以画布原点旋转
+        function rotateContext(ctx, x, y, degree) {
+            ctx.translate(x, y);
+            ctx.rotate(degree * Math.PI / 180);
+            //  ctx.translate(-x, -y);
+        }
+
+    </script>
+</body>
+
+</html>
