@@ -1,58 +1,106 @@
 <html>
 
-<head></head>
+<head>
+    <meta charset="utf-8">
+    <title>Word Clock</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js "></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        canvas {
+            display: block;
+            background: black;
+        }
+    </style>
+</head>
 
 <body>
     <div>
-        <canvas id="clock" width="1920" height="1080"></canvas>
-
+        <canvas id="clock" width="1280" height="720"></canvas>
     </div>
-    <script>
-        let canvas = document.getElementById("clock");
-        let ctx = canvas.getContext('2d');
-        let degree = 0;
-        ctx.font = "bold 40px '字体','字体','楷体','宋体'"; //设置字体
 
-        const weeks = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
-        const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+    <script type="text/javascript">
+        const canvas = document.getElementById("clock");
+        const ctx = canvas.getContext('2d');
+        let width = 1920;
+        let height = 1080;
+
+        $(function () {
+            //添加窗口尺寸改变响应监听
+            $(window).resize(resizeCanvas);
+            //页面加载后先设置一下canvas大小
+            resizeCanvas();
+        });
+
+        //窗口尺寸改变响应（修改canvas大小）
+        function resizeCanvas() {
+            width = $(window).get(0).innerWidth;
+            height = $(window).get(0).innerHeight;
+            $("#clock").attr("width", width);
+            $("#clock").attr("height", height);
+            ctx.font = "bold 20px '字体','字体','楷体','宋体'";
+        };
+
+        const weeks = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
+
+        const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+
+        const days = ['一日', '二日', '三日', '四日', '五日', '六日', '七日', '八日', '九日', '十日',
+            '十一日', '十二日', '十三日', '十四日', '十五日', '十六日', '十七日', '十八日', '十九日', '二十日',
+            '二十一日', '二十二日', '二十三日', '二十四日', '二十五日', '二十六日', '二十七日', '二十八日', '二十九日', '三十日', '三十一日'];
+
+        const noons = ['上午', '下午'];
+
+        const minutes = ['一分', '二分', '三分', '四分', '五分', '六分', '七分', '八分', '九分', '十分', '十一分', '十二分', '十三分', '十四分', '十五分',
+            '十六分', '十七分', '十八分', '十九分', '二十分', '二十一分', '二十二分', '二十三分', '二十四分', '二十五分', '二十六分', '二十七分', '二十八分', '二十九分', '三十分',
+            '三十一分', '三十二分', '三十三分', '三十四分', '三十五分', '三十六分', '三十七分', '三十八分', '三十九分', '四十分', '四十一分', '四十二分', '四十三分', '四十四分', '四十五分',
+            '四十六分', '四十七分', '四十八分', '四十九分', '五十分', '五十一分', '五十二分', '五十三分', '五十四分', '五十五分', '五十六分', '五十七分', '五十八分', '五十九分'];
+
+        const seconds = ['一秒', '二秒', '三秒', '四秒', '五秒', '六秒', '七秒', '八秒', '九秒', '十秒', '十一秒', '十二秒', '十三秒', '十四秒', '十五秒',
+            '十六秒', '十七秒', '十八秒', '十九秒', '二十秒', '二十一秒', '二十二秒', '二十三秒', '二十四秒', '二十五秒', '二十六秒', '二十七秒', '二十八秒', '二十九秒', '三十秒',
+            '三十一秒', '三十二秒', '三十三秒', '三十四秒', '三十五秒', '三十六秒', '三十七秒', '三十八秒', '三十九秒', '四十秒', '四十一秒', '四十二秒', '四十三秒', '四十四秒', '四十五秒',
+            '四十六秒', '四十七秒', '四十八秒', '四十九秒', '五十秒', '五十一秒', '五十二秒', '五十三秒', '五十四秒', '五十五秒', '五十六秒', '五十七秒', '五十八秒', '五十九秒'];
+
+        let degree = 0;
 
         setInterval(drawText, 1000);
 
         function drawText() {
-            let width = 1440;
-            let height = 900;
-            // ctx.clearRect(0, 0, 1920, 1080);
-            ctx.fillStyle = 'black';  //设置填充的背景颜色
-            ctx.fillRect(0, 0, width, height); //绘制 800*300 像素的已填充矩形：
+
+            ctx.clearRect(0, 0, width, height); //绘制 800*300 像素的已填充矩形：
             ctx.fillStyle = "white";
 
-            for (let i = 0; i < weeks.length; i++) {
-                ctx.fillText(weeks[i], 150, i * 100 + 100);
-            }
-
-            for (let i = 0; i < months.length; i++) {
-                ctx.save();
-                rotateContext(ctx, width / 2, height / 2, i * (360 / months.length)+degree);
-                ctx.fillText(months[i], 200, 0);
-                ctx.restore();
-            }
-
+            draw(months, 100);
+            draw(days, 200);
+            draw(weeks, 300);
+            draw(noons, 400);
+            draw(minutes, 500);
+            draw(seconds, 600);
 
             if (degree > 360) {
                 degree = 0
             } else {
-                degree+=10
+                degree += 1
             }
-
         }
 
-        //确保是以(x,y)为中心进行旋转，而不是简单的以画布原点旋转
-        function rotateContext(ctx, x, y, degree) {
-            ctx.translate(x, y);
-            ctx.rotate(degree * Math.PI / 180);
-            //  ctx.translate(-x, -y);
+        function draw(perid, radius) {
+            for (let i = 0; i < perid.length; i++) {
+                ctx.save();
+                ctx.translate(width / 2, height / 2);
+                ctx.rotate((i * (360 / perid.length) + degree) * Math.PI / 180);
+                ctx.fillText(perid[i], radius, 0);
+                ctx.restore();
+            }
         }
-
     </script>
 </body>
 
