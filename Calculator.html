@@ -1,0 +1,94 @@
+<script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
+<input type="text" value="">
+<div class="row">
+    <button type="button">AC</button>
+    <button type="button">(</button>
+    <button type="button">)</button>
+    <button type="button">⬅</button>
+</div>
+<div class="row">
+    <button type="button">7</button>
+    <button type="button">8</button>
+    <button type="button">9</button>
+    <button type="button">/</button>
+</div>
+<div class="row">
+    <button type="button">4</button>
+    <button type="button">5</button>
+    <button type="button">6</button>
+    <button type="button">*</button>
+</div>
+<div class="row">
+    <button type="button">1</button>
+    <button type="button">2</button>
+    <button type="button">3</button>
+    <button type="button">-</button>
+</div>
+<div class="row">
+    <button type="button">.</button>
+    <button type="button">0</button>
+    <button type="button" class="equal">=</button>
+    <button type="button">+</button>
+</div>
+<script>
+    $(document).ready(function () {
+        var expression = '';
+        $("button").click(function () {
+            var val = this.innerText;
+            if (val == '=') {
+                expression = $("input").val();
+                console.log(eval(expression));
+                $("input").val(eval(expression));
+                expression = '';
+            } else if (val == 'AC') {
+                expression = '';
+                $("input").val(expression);
+            } else if (val == '⬅') {
+                expression = expression.substring(0, expression.length - 1)
+                $("input").val(expression);
+            } else {
+                expression = expression + val;
+                $("input").val(expression);
+            }
+            console.log(expression);
+
+        })
+    })
+</script>
+
+<style>
+    button {
+        background-color: #008CBA;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        height: 64px;
+        width: 64px
+    }
+
+    button:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .row {
+        margin: 4px
+    }
+
+    .equal {
+        background-color: #f44336;
+    }
+
+    input {
+        outline-style: none;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 8px 8px;
+        width: 278px;
+        font-size: 18px;
+    }
+</style>
