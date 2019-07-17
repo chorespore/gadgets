@@ -1,35 +1,37 @@
 <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
-<input type="text" value="">
-<div class="row">
-    <button type="button">AC</button>
-    <button type="button">(</button>
-    <button type="button">)</button>
-    <button type="button">⬅</button>
+<div class='panel'>
+    <input type="text" value="">
+    <div class="row">
+        <button type="button">AC</button>
+        <button type="button">(</button>
+        <button type="button">)</button>
+        <button type="button">
+            <</button> </div> <div class="row">
+                <button type="button">7</button>
+                <button type="button">8</button>
+                <button type="button">9</button>
+                <button type="button">/</button>
+    </div>
+    <div class="row">
+        <button type="button">4</button>
+        <button type="button">5</button>
+        <button type="button">6</button>
+        <button type="button">*</button>
+    </div>
+    <div class="row">
+        <button type="button">1</button>
+        <button type="button">2</button>
+        <button type="button">3</button>
+        <button type="button">-</button>
+    </div>
+    <div class="row">
+        <button type="button">.</button>
+        <button type="button">0</button>
+        <button type="button" class="equal">=</button>
+        <button type="button">+</button>
+    </div>
 </div>
-<div class="row">
-    <button type="button">7</button>
-    <button type="button">8</button>
-    <button type="button">9</button>
-    <button type="button">/</button>
-</div>
-<div class="row">
-    <button type="button">4</button>
-    <button type="button">5</button>
-    <button type="button">6</button>
-    <button type="button">*</button>
-</div>
-<div class="row">
-    <button type="button">1</button>
-    <button type="button">2</button>
-    <button type="button">3</button>
-    <button type="button">-</button>
-</div>
-<div class="row">
-    <button type="button">.</button>
-    <button type="button">0</button>
-    <button type="button" class="equal">=</button>
-    <button type="button">+</button>
-</div>
+
 <script>
     $(document).ready(function () {
         var expression = '';
@@ -43,7 +45,7 @@
             } else if (val == 'AC') {
                 expression = '';
                 $("input").val(expression);
-            } else if (val == '⬅') {
+            } else if (val == '<') {
                 expression = expression.substring(0, expression.length - 1)
                 $("input").val(expression);
             } else {
@@ -83,12 +85,27 @@
         background-color: #f44336;
     }
 
+    .panel {
+        width: 300px;
+        height: 420px;
+        text-align: center;
+        border-radius: 20px;
+        background-color: #ccc;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
     input {
         outline-style: none;
         border: 1px solid #ccc;
         border-radius: 8px;
         padding: 8px 8px;
-        width: 278px;
+        margin: 16px 0 8px 0;
+        width: 270px;
         font-size: 18px;
     }
 </style>
