@@ -13,80 +13,82 @@
     <div id="example"></div>
 
     <script type="text/babel">
-
-
-class Content extends React.Component {
-    render() {
-        return <div>
-            <div style={inputStyle}>
-                <textarea  value={this.props.orgText} onChange={this.props.updateStateProp} style={textareaStyle} />
-            </div>
-            <div style={outputStyle}>
-                <textarea value={this.props.trimedText} style={textareaStyle} />
-            </div>
-        </div>;
-    }
-}
-class HelloMessage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { orgText:'', trimedText:'' };
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    trimCitation(textIn) {
-        while (textIn.indexOf('[') > 0 || textIn.indexOf(']') > 0) {
-            let left = textIn.indexOf('[');
-            let right = textIn.indexOf(']');
-            if (left < 0 || right < 0) {
-                let max = Math.max(left, right);
-                left = right = max;
+        class Content extends React.Component {
+            render() {
+                return <div>
+                    <div style={this.props.style.inputStyle}>
+                        <textarea value={this.props.text.orgText} onChange={this.props.updateStateProp} style={this.props.style.textareaStyle} />
+                    </div>
+                    <div style={this.props.style.outputStyle}>
+                        <textarea value={this.props.text.trimedText} style={this.props.style.textareaStyle} />
+                    </div>
+                </div>;
             }
-            if (left > right) {
-                [left, right] = [right, left];
-            }
-            let front = textIn.substring(0, left);
-            let back = textIn.substring(right + 1, textIn.length);
-            textIn = front + back;
         }
-        return textIn;
-    }
 
-    handleChange(event) {
-        let orgText = event.target.value;
-        let trimedText = this.trimCitation(orgText);
-        this.setState({ orgText: orgText,trimedText:trimedText });
-    }
-    render() {
-        let orgText = this.state.orgText;
-        let trimedText = this.state.trimedText;
-        return <Content orgText={orgText} trimedText={trimedText} updateStateProp={this.handleChange}></Content>
-    }
-}
-ReactDOM.render(
-    <HelloMessage />,
-    document.getElementById('example')
-);
+        class TrimText extends React.Component {
+            constructor(props) {
+                super(props);
+            
+                const style = {
+                    inputStyle: {
+                        width: '49%',
+                        height: '-webkit-fill-available',
+                        float: 'left',
+                    },
+                    outputStyle: {
+                        width: '49%',
+                        height: '-webkit-fill-available',
+                        float: 'right',
+                    },
+                    textareaStyle: {
+                        width: '-webkit-fill-available',
+                        height: '-webkit-fill-available',
+                    }
+                }
 
-let inputStyle = {
-    width: '49%',
-    height: '-webkit-fill-available',
-    float: 'left',
-};
+                const initText={orgText: '', trimedText: ''};
+            
+                this.state = { text:initText, style: style };
+            
+                this.handleChange = this.handleChange.bind(this);
+            }
+        
+            trimCitation(textIn) {
+                while (textIn.indexOf('[') > 0 || textIn.indexOf(']') > 0) {
+                    let left = textIn.indexOf('[');
+                    let right = textIn.indexOf(']');
+                    if (left < 0 || right < 0) {
+                        let max = Math.max(left, right);
+                        left = right = max;
+                    }
+                    if (left > right) {
+                        [left, right] = [right, left];
+                    }
+                    let front = textIn.substring(0, left);
+                    let back = textIn.substring(right + 1, textIn.length);
+                    textIn = front + back;
+                }
+                return textIn;
+            }
+        
+            handleChange(event) {
+                let orgText = event.target.value;
+                let trimedText = this.trimCitation(orgText);
+                let text={orgText: orgText, trimedText: trimedText};
+                this.setState({text:text });
+            }
 
-let outputStyle = {
-    width: '49%',
-    height: '-webkit-fill-available',
-    float: 'right',
-};
+            render() {
+                return <Content text={this.state.text} updateStateProp={this.handleChange} style={this.state.style}></Content>
+            }
+        }
 
-let textareaStyle = {
-    width: '-webkit-fill-available',
-    height: '-webkit-fill-available',
-};
-
-
-</script>
+        ReactDOM.render(
+            <TrimText />,
+            document.getElementById('example')
+        );
+    </script>
 
 </body>
 
