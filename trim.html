@@ -19,10 +19,10 @@ class Content extends React.Component {
     render() {
         return <div>
             <div style={inputStyle}>
-                <input type="textarea" value={this.props.myDataProp} onChange={this.props.updateStateProp} style={textareaStyle} />
+                <textarea  value={this.props.orgText} onChange={this.props.updateStateProp} style={textareaStyle} />
             </div>
             <div style={outputStyle}>
-                <input type="textarea" value={this.props.myDataProp} style={textareaStyle} />
+                <textarea value={this.props.trimedText} style={textareaStyle} />
             </div>
         </div>;
     }
@@ -30,7 +30,7 @@ class Content extends React.Component {
 class HelloMessage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: 'Hello Runoob!' };
+        this.state = { orgText:'', trimedText:'' };
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -53,16 +53,14 @@ class HelloMessage extends React.Component {
     }
 
     handleChange(event) {
-        let textIn = event.target.value;
-        let trimedText = this.trimCitation(textIn);
-        this.setState({ value: event.target.value });
+        let orgText = event.target.value;
+        let trimedText = this.trimCitation(orgText);
+        this.setState({ orgText: orgText,trimedText:trimedText });
     }
     render() {
-        var value = this.state.value;
-        return <div>
-            <Content myDataProp={value}
-                updateStateProp={this.handleChange}></Content>
-        </div>;
+        let orgText = this.state.orgText;
+        let trimedText = this.state.trimedText;
+        return <Content orgText={orgText} trimedText={trimedText} updateStateProp={this.handleChange}></Content>
     }
 }
 ReactDOM.render(
@@ -85,7 +83,7 @@ let outputStyle = {
 let textareaStyle = {
     width: '-webkit-fill-available',
     height: '-webkit-fill-available',
-}
+};
 
 
 </script>
