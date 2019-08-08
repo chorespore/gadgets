@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Calculator</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="calculator"></div>
+    <script type="text/babel">
+      class Row extends React.Component {
+        constructor(props) {
+            super(props);
+        
+            const style = {
+                button: {
+                    backgroundColor: '#008CBA',
+                    border: 'none',
+                    color: 'white',
+                    borderRadius: '4px',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    width: '64px',
+                    height: '64px',
+                    fontSize: '24px',
+                    margin: '1px 6px',
+                },
+                row: {
+                    margin: '8px',
+                }
+            }
+        
+            const keys = this.props.keys;
+            const items = keys.map((key) =>
+                <button onClick={this.props.updateStateProp} style={style.button}>{key}</button>
+            );
+        
+            this.state = { style: style, items: items };
+        }
+        render() {
+            return <div style={this.state.style.row}>{this.state.items}</div>;
+        }
+    }
+    
+    class Panel extends React.Component {
+        constructor(props) {
+            super(props);
+        
+            let keyboard =
+                [['AC', '(', ')', '<'],
+                ['7', '8', '9', '/'],
+                ['4', '5', '6', '*'],
+                ['1', '2', '3', '-'],
+                ['.', '0', '=', '+']];
+        
+            const rowItems = keyboard.map((row) =>
+                <Row keys={row} updateStateProp={this.handleChange}></Row>
+            );
+        
+            this.state = { rowItems: rowItems };
+            this.handleChange = this.handleChange.bind(this);
+        }
+    
+        handleChange(event) {
+        }
+    
+        render() {
+            return <div>{this.state.rowItems}</div>;
+        }
+    }
+    
+    ReactDOM.render(<Panel />, document.getElementById('calculator'));
+    </script>
+</body>
+
+</html>
