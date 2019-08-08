@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 
 fileType = [".png", ".pdf"]
@@ -27,3 +28,4 @@ if (cmd is "2"):
             os.rename(file, newName)
 
     print(str(idx)+" files renamed!")
+
