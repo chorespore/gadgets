@@ -5,9 +5,9 @@ fileType = [".png", ".pdf"]
 files = os.listdir("./")
 files.sort()
 
-cmd = input("1: 生成编号\n2: 清除编号\n")
+cmd = int(input("1: 生成编号\n2: 清除编号\n"))
 
-if(cmd is "1"):
+if(cmd is 1):
     idx = 0
     for file in files:
         if(os.path.splitext(file)[1] in fileType and ". " not in file):
@@ -18,7 +18,7 @@ if(cmd is "1"):
 
     print(str(idx)+" files renamed!")
 
-if (cmd is "2"):
+if (cmd is 2):
     idx = 0
     for file in files:
         if(os.path.splitext(file)[1] in fileType and ". " in file):
