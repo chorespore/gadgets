@@ -12,7 +12,7 @@
 <body>
     <div id="calculator"></div>
     <script type="text/babel">
-      class Row extends React.Component {
+    class Row extends React.Component {
         constructor(props) {
             super(props);
         
@@ -35,9 +35,9 @@
                 }
             }
         
-            const keys = this.props.keys;
-            const items = keys.map((key) =>
-                <button onClick={this.props.updateStateProp} style={style.button}>{key}</button>
+            const cells = this.props.cells;
+            const items = cells.map((item) =>
+                <button key={item} onClick={this.props.keyClicked} style={style.button}>{item}</button>
             );
         
             this.state = { style: style, items: items };
@@ -58,19 +58,65 @@
                 ['1', '2', '3', '-'],
                 ['.', '0', '=', '+']];
         
-            const rowItems = keyboard.map((row) =>
-                <Row keys={row} updateStateProp={this.handleChange}></Row>
+        
+            const style = {
+                input: {
+                    outlineStyle: 'none',
+                    border: '1px solid #ccc',
+                    borderRadius: '8px',
+                    padding: '8px 8px',
+                    margin: '16px 0 8px 0',
+                    width: '270px',
+                    fontSize: '18px',
+                },
+            
+                panel: {
+                    width: '320px',
+                    height: '450px',
+                    textAlign: 'center',
+                    borderRadius: '20px',
+                    backgroundColor: '#ccc',
+                    position: 'absolute',
+                }
+            };
+        
+            const rowItems = keyboard.map((row, id) =>
+                <Row key={'row' + id} cells={row} keyClicked={this.handleClick.bind(this)}></Row>
             );
         
-            this.state = { rowItems: rowItems };
-            this.handleChange = this.handleChange.bind(this);
+            this.state = { rowItems: rowItems, style: style, expression: '' };
         }
     
-        handleChange(event) {
+        handleClick(event) {
+            let val = event.target.innerText;
+            let expression = this.state.expression;
+            if (val == '=') {
+                console.log(eval(expression));
+                this.setState({ expression: eval(expression).toString() })
+                expression = '';
+            } else if (val == 'AC') {
+                expression = '';
+                this.setState({ expression: expression })
+            } else if (val == '<') {
+                expression = expression.substring(0, expression.length - 1)
+                this.setState({ expression: expression })
+            } else {
+                expression = expression + val;
+                this.setState({ expression: expression })
+            }
+            console.log(expression);
+        }
+    
+        handleTyping(event) {
+            let expression = event.target.value;
+            this.setState({ expression: expression })
         }
     
         render() {
-            return <div>{this.state.rowItems}</div>;
+            return <div style={this.state.style.panel}>
+                <input type="text" style={this.state.style.input} value={this.state.expression} onChange={this.handleTyping.bind(this)}></input>
+                <div>{this.state.rowItems}</div>
+            </div>;
         }
     }
     
