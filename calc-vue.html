@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Calculator-Vue</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+  </head>
+  <body>
+    <div id="app" v-bind:style="panelStyles">
+      <input v-model="expression" v-bind:style="inputStyles" />
+      <div v-for="r in 5" v-bind:style="rowStyles">
+        <button
+          v-for="key in keyboard[r-1]"
+          v-bind:style="buttonStyles"
+          v-on:click="expression=press(expression,key)"
+        >
+          {{ key }}
+        </button>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        methods: {
+          press: function(expression, key) {
+            if (key == "=") {
+              console.log(eval(expression));
+              expression = eval(expression).toString();
+            } else if (key == "AC") {
+              expression = "";
+            } else if (key == "<") {
+              expression = expression.substring(0, expression.length - 1);
+            } else {
+              expression = expression + key;
+            }
+            console.log(expression);
+            return expression;
+          }
+        },
+        data: {
+          expression: "",
+          keyboard: [
+            ["AC", "(", ")", "<"],
+            ["7", "8", "9", "/"],
+            ["4", "5", "6", "*"],
+            ["1", "2", "3", "-"],
+            [".", "0", "=", "+"]
+          ],
+          buttonStyles: {
+            backgroundColor: "#008CBA",
+            border: "none",
+            color: "white",
+            borderRadius: "4px",
+            textAlign: "center",
+            textDecoration: "none",
+            display: "inline-block",
+            width: "64px",
+            height: "64px",
+            fontSize: "24px",
+            margin: "1px 6px"
+          },
+          rowStyles: {
+            margin: "8px"
+          },
+          inputStyles: {
+            outlineStyle: "none",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            padding: "8px 8px",
+            margin: "16px 0 8px 0",
+            width: "270px",
+            fontSize: "18px"
+          },
+
+          panelStyles: {
+            width: "320px",
+            height: "450px",
+            textAlign: "center",
+            borderRadius: "20px",
+            backgroundColor: "#ccc",
+            position: "absolute"
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
