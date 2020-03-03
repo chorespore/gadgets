@@ -16,44 +16,35 @@
           super(props);
 
           const style = {
+            button: {
+              border: "none",
+              color: "white",
+              borderRadius: "4px",
+              textAlign: "center",
+              textDecoration: "none",
+              display: "inline-block",
+              width: "64px",
+              height: "64px",
+              fontSize: "24px",
+              margin: "1px 6px"
+            },
             row: {
               margin: "8px"
             }
           };
 
-          const cells = this.props.cells;
-          const items = cells.map(item => {
-            function background(item) {
-              let button = {
-                border: "none",
-                color: "white",
-                borderRadius: "4px",
-                textAlign: "center",
-                textDecoration: "none",
-                display: "inline-block",
-                width: "64px",
-                height: "64px",
-                fontSize: "24px",
-                margin: "1px 6px"
-              };
-              if (item == "=") {
-                button["backgroundColor"] = "#f44336";
-              } else {
-                button["backgroundColor"] = "#008CBA";
-              }
-              return button;
-            }
-
-            return (
-              <button
-                key={item}
-                onClick={this.props.keyClicked}
-                style={background(item)}
-              >
-                {item}
-              </button>
-            );
-          });
+          const items = this.props.cells.map(item => (
+            <button
+              key={item}
+              onClick={this.props.keyClicked}
+              style={{
+                ...style.button,
+                backgroundColor: item == "=" ? "#f44336" : "#008CBA"
+              }}
+            >
+              {item}
+            </button>
+          ));
 
           this.state = { style: style, items: items };
         }
