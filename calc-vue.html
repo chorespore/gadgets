@@ -11,7 +11,7 @@
       <div v-for="r in 5" v-bind:style="rowStyles">
         <button
           v-for="key in keyboard[r-1]"
-          v-bind:style="buttonStyles"
+          v-bind:style="[buttonStyles,key=='=' ? equalStyles : '']"
           v-on:click="expression=press(expression,key)"
         >
           {{ key }}
@@ -60,6 +60,9 @@
             fontSize: "24px",
             margin: "1px 6px"
           },
+          equalStyles: {
+            backgroundColor: "#f44336"
+          },
           rowStyles: {
             margin: "8px"
           },
@@ -72,7 +75,6 @@
             width: "270px",
             fontSize: "18px"
           },
-
           panelStyles: {
             width: "320px",
             height: "450px",
