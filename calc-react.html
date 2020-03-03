@@ -1,127 +1,153 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Calculator</title>
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
     <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="calculator"></div>
     <script type="text/babel">
-    class Row extends React.Component {
+      class Row extends React.Component {
         constructor(props) {
-            super(props);
-        
-            const style = {
-                button: {
-                    backgroundColor: '#008CBA',
-                    border: 'none',
-                    color: 'white',
-                    borderRadius: '4px',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    display: 'inline-block',
-                    width: '64px',
-                    height: '64px',
-                    fontSize: '24px',
-                    margin: '1px 6px',
-                },
-                row: {
-                    margin: '8px',
-                }
-            }
-        
-            const cells = this.props.cells;
-            const items = cells.map((item) =>
-                <button key={item} onClick={this.props.keyClicked} style={style.button}>{item}</button>
-            );
-        
-            this.state = { style: style, items: items };
-        }
-        render() {
-            return <div style={this.state.style.row}>{this.state.items}</div>;
-        }
-    }
-    
-    class Panel extends React.Component {
-        constructor(props) {
-            super(props);
-        
-            let keyboard =
-                [['AC', '(', ')', '<'],
-                ['7', '8', '9', '/'],
-                ['4', '5', '6', '*'],
-                ['1', '2', '3', '-'],
-                ['.', '0', '=', '+']];
-        
-        
-            const style = {
-                input: {
-                    outlineStyle: 'none',
-                    border: '1px solid #ccc',
-                    borderRadius: '8px',
-                    padding: '8px 8px',
-                    margin: '16px 0 8px 0',
-                    width: '270px',
-                    fontSize: '18px',
-                },
-            
-                panel: {
-                    width: '320px',
-                    height: '450px',
-                    textAlign: 'center',
-                    borderRadius: '20px',
-                    backgroundColor: '#ccc',
-                    position: 'absolute',
-                }
-            };
-        
-            const rowItems = keyboard.map((row, id) =>
-                <Row key={'row' + id} cells={row} keyClicked={this.handleClick.bind(this)}></Row>
-            );
-        
-            this.state = { rowItems: rowItems, style: style, expression: '' };
-        }
-    
-        handleClick(event) {
-            let val = event.target.innerText;
-            let expression = this.state.expression;
-            if (val == '=') {
-                console.log(eval(expression));
-                this.setState({ expression: eval(expression).toString() })
-                expression = '';
-            } else if (val == 'AC') {
-                expression = '';
-                this.setState({ expression: expression })
-            } else if (val == '<') {
-                expression = expression.substring(0, expression.length - 1)
-                this.setState({ expression: expression })
-            } else {
-                expression = expression + val;
-                this.setState({ expression: expression })
-            }
-            console.log(expression);
-        }
-    
-        handleTyping(event) {
-            let expression = event.target.value;
-            this.setState({ expression: expression })
-        }
-    
-        render() {
-            return <div style={this.state.style.panel}>
-                <input type="text" style={this.state.style.input} value={this.state.expression} onChange={this.handleTyping.bind(this)}></input>
-                <div>{this.state.rowItems}</div>
-            </div>;
-        }
-    }
-    
-    ReactDOM.render(<Panel />, document.getElementById('calculator'));
-    </script>
-</body>
+          super(props);
 
+          const style = {
+            row: {
+              margin: "8px"
+            }
+          };
+
+          const cells = this.props.cells;
+          const items = cells.map(item => {
+            function background(item) {
+              let button = {
+                border: "none",
+                color: "white",
+                borderRadius: "4px",
+                textAlign: "center",
+                textDecoration: "none",
+                display: "inline-block",
+                width: "64px",
+                height: "64px",
+                fontSize: "24px",
+                margin: "1px 6px"
+              };
+              if (item == "=") {
+                button["backgroundColor"] = "#f44336";
+              } else {
+                button["backgroundColor"] = "#008CBA";
+              }
+              return button;
+            }
+
+            return (
+              <button
+                key={item}
+                onClick={this.props.keyClicked}
+                style={background(item)}
+              >
+                {item}
+              </button>
+            );
+          });
+
+          this.state = { style: style, items: items };
+        }
+
+        render() {
+          return <div style={this.state.style.row}>{this.state.items}</div>;
+        }
+      }
+
+      class Panel extends React.Component {
+        constructor(props) {
+          super(props);
+
+          let keyboard = [
+            ["AC", "(", ")", "<"],
+            ["7", "8", "9", "/"],
+            ["4", "5", "6", "*"],
+            ["1", "2", "3", "-"],
+            [".", "0", "=", "+"]
+          ];
+
+          const style = {
+            input: {
+              outlineStyle: "none",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              padding: "8px 8px",
+              margin: "16px 0 8px 0",
+              width: "270px",
+              fontSize: "18px"
+            },
+
+            panel: {
+              width: "320px",
+              height: "450px",
+              textAlign: "center",
+              borderRadius: "20px",
+              backgroundColor: "#ccc",
+              position: "absolute"
+            }
+          };
+
+          const rowItems = keyboard.map((row, id) => (
+            <Row
+              key={"row" + id}
+              cells={row}
+              keyClicked={this.handleClick.bind(this)}
+            ></Row>
+          ));
+
+          this.state = { rowItems: rowItems, style: style, expression: "" };
+        }
+
+        handleClick(event) {
+          let val = event.target.innerText;
+          let expression = this.state.expression;
+          if (val == "=") {
+            console.log(eval(expression));
+            this.setState({ expression: eval(expression).toString() });
+            expression = "";
+          } else if (val == "AC") {
+            expression = "";
+            this.setState({ expression: expression });
+          } else if (val == "<") {
+            expression = expression.substring(0, expression.length - 1);
+            this.setState({ expression: expression });
+          } else {
+            expression = expression + val;
+            this.setState({ expression: expression });
+          }
+          console.log(expression);
+        }
+
+        handleTyping(event) {
+          let expression = event.target.value;
+          this.setState({ expression: expression });
+        }
+
+        render() {
+          return (
+            <div style={this.state.style.panel}>
+              <input
+                type="text"
+                style={this.state.style.input}
+                value={this.state.expression}
+                onChange={this.handleTyping.bind(this)}
+              ></input>
+              <div>{this.state.rowItems}</div>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<Panel />, document.getElementById("calculator"));
+    </script>
+  </body>
 </html>
