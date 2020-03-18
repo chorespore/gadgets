@@ -44,8 +44,8 @@ function trimFile(filePath) {
             cnt++
         }
 
-        fs.writeFileSync(filePath, content);
         if (cnt > 0) {
+            fs.writeFileSync(filePath, content);
             console.log(filePath + " " + cnt);
         }
     }
